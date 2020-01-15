@@ -3,8 +3,8 @@ import busio
 from digitalio import DigitalInOut
 
 from adafruit_esp32spi import adafruit_esp32spi
-import adafruit_esp32spi.adafruit_esp32spi_requests as requests
-
+#import adafruit_esp32spi.adafruit_esp32spi_requests as requests
+import adafruit_requests as requests
 print("ESP32 SPI hardware test")
 
 esp32_cs = DigitalInOut(board.D11)
