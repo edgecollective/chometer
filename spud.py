@@ -29,8 +29,6 @@ print("PK=",PRIVATE_KEY)
 
 base_url = "http://192.168.1.254:8000/api/user"
 
-#base_url = "http://httpbin.org/post"
-
 JSON_POST_URL = base_url
 
 # esp32
@@ -65,35 +63,40 @@ def connect(essid,password): # note that these are arguments are b'essid' and b'
 
 
 # measure and display loop
-connect(WIFI_ESSID,WIFI_PASS)
-
 while True:
 
     gc.collect()
 
-    try:
-  
-        distance = sonar.distance
-        print((distance,))
+    #try:
+
+        
+       
+    distance = sonar.distance
+    print((distance,))
 
 
-        json_data = {'private_key':PRIVATE_KEY, 
-            'current':0., 
-            'voltage':0.,
-            'resistance':distance
+    json_data = {'private_key':PRIVATE_KEY, 
+        'current':0., 
+        'voltage':0.,
+        'resistance':distance
         } 
-        #json_data={"distance":distance}
-        print("Posting to ",JSON_POST_URL)
+    #json_data={"distance":distance}
+    print("Posting to ",JSON_POST_URL)
 
-        response = requests.post(JSON_POST_URL, json=json_data)
-        print(response.content)
-        response.close()
+    connect(WIFI_ESSID,WIFI_PASS)
+    response = requests.post(JSON_POST_URL, json=json_data)
+    print(response.content)
+    response.close()
 
-        print("Done. Sleeping ... ")
-        time.sleep(.5)
+    print("Done. Sleeping ... ")
+    for i in range(1,3):
+        led.value=True
+        time.sleep(.1)
+        led.value = False
+        time.sleep(.1)
 
+    #except Exception as e:
 
-    except Exception as e:
+    #print("error: "+str(e))
 
-        print("error: "+str(e))
-        time.sleep(.5)
+    time.sleep(5)
