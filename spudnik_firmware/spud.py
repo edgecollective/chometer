@@ -90,6 +90,11 @@ while True:
         response.close()
 
         print("Done. Sleeping ... ")
+        led.value=True
+        time.sleep(.05)
+        led.value = False
+        time.sleep(.05)
+
         time.sleep(.5)
 
 
