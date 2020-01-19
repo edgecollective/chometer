@@ -1,13 +1,13 @@
 var express = require("express")
 var app = express()
-var db = require("./database.js")
+var db = require("./database4.js")
 var md5 = require("md5")
 const sqliteToCsv = require("sqlite-to-csv");
 
 'use strict';
 
 
-var args = { filePath : "db.sqlite", outputPath : "./mycsv" };
+var args = { filePath : "db4.sqlite", outputPath : "./mycsv" };
 
 const fs = require('fs');
 
@@ -132,9 +132,9 @@ app.post("/api/user/", (req, res, next) => {
     */
    var ts = Math.round((new Date()).getTime() / 1000);
     var data = {
-        current: req.body.current,
-        voltage: req.body.voltage,
-        resistance: req.body.resistance,
+        sensorA: req.body.sensorA,
+        sensorB: req.body.sensorB,
+        sensorC: req.body.sensorC,
         priv_key: req.body.private_key
     }
     //console.log("incoming!")
@@ -148,8 +148,8 @@ app.post("/api/user/", (req, res, next) => {
         console.log('private key matches!')
     }
 
-    var sql ='INSERT INTO user (dateTime,current,voltage,resistance) VALUES (?,?,?,?)'
-    var params =[ts,data.current, data.voltage,data.resistance]
+    var sql ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
+    var params =[ts,data.sensorA, data.sensorB,data.sensorC]
     db.run(sql, params, function (err, result) {
         if (err){
             res.status(400).json({"error": err.message})

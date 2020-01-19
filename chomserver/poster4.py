@@ -10,22 +10,22 @@ PRIVATE_KEY = 'a123'
 API_ENDPOINT = "http://localhost:8001/api/user"
 #API_ENDPOINT = 'http://64.227.0.108:8001/api/user'
 
-current=1.5
-voltage=1.5
-resistance=1.5
+sensorA=1.5
+sensorB=1.5
+sensorC=1.5
 
 while True:
 
-    current = current+2*random()-1
-    voltage = voltage+2*random()-1
-    resistance = resistance+2*random()-1
+    sensorA = sensorA+2*random()-1
+    sensorB = sensorB+2*random()-1
+    sensorC = sensorC+2*random()-1
 
-    print(current,voltage,resistance)
+    print(sensorA,sensorB,sensorC)
 
     data = {'private_key':PRIVATE_KEY, 
-            'current':current, 
-            'voltage':voltage,
-            'resistance':resistance
+            'sensorA':sensorA, 
+            'sensorB':sensorB,
+            'sensorC':sensorC
             } 
 
     r = requests.post(url = API_ENDPOINT, json = data) 
