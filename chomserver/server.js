@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 
 // https://www.npmjs.com/package/csv-export
 
-var HTTP_PORT = 8000
+var HTTP_PORT = 8001
 
 
 // Start server
@@ -68,7 +68,22 @@ app.get("/api/user/id", (req, res, next) => {
 });
 
 
-
+app.get("/api/user/last", (req, res, next) => {
+    console.log('all')
+    //var sql = "select * from user order by timestamp desc LIMIT 10"
+    var sql = "select * from user order by id desc LIMIT 1"
+    var params = []
+    db.all(sql, params, (err, row) => {
+        if (err) {
+          res.status(400).json({"error":err.message});
+          return;
+        }
+        res.json({
+            "message":"success",
+            "data":row
+        })
+      });
+});
 
 
 
