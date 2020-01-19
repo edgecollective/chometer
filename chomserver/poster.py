@@ -8,6 +8,7 @@ seed(1)
 PRIVATE_KEY = 'a123'
 
 API_ENDPOINT = "http://localhost:8000/api/user"
+#API_ENDPOINT = 'http://64.227.0.108:8001/api/user'
 
 current=1.5
 voltage=1.5
