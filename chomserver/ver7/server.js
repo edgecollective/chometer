@@ -130,6 +130,10 @@ app.post("/api/user/", (req, res, next) => {
         return;
     }
     */
+   res.send({
+    "message": "success"
+})
+res.end()
    var ts = Math.round((new Date()).getTime() / 1000);
     var data = {
         sensor: req.body.sensor,
