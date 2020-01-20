@@ -7,15 +7,15 @@ seed(1)
 
 PRIVATE_KEY = 'a123'
 
-API_ENDPOINT = "http://localhost:8001/api/user"
-#API_ENDPOINT = 'http://64.227.0.108:8001/api/user'
+#API_ENDPOINT = "http://localhost:8001/api/user"
+API_ENDPOINT = 'http://64.227.0.108:8001/api/user'
 
 
 testvalue = random()
 
 testvalue = 9.
 
-sensorValue='sensorA'
+sensorValue='sensorC'
 
 print(testvalue)
 
