@@ -197,7 +197,7 @@ app.post("/api/reading/", (req, res, next) => {
             res.send({
                 "message": "success"
             })
-            res.end()
+            //res.end()
         });
         
         })
