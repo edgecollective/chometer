@@ -166,7 +166,6 @@ app.post("/api/reading/", (req, res, next) => {
         
         var sql_insert ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
 
-
         var params_insert =[ts,0., 0.,0.]
 
         // check which value to keep
@@ -193,10 +192,11 @@ app.post("/api/reading/", (req, res, next) => {
                 return;
             }
             console.log("responding ...")
-            res.send({
+            /*res.send({
                 "message": "success"
             })
-            //res.end()
+            */
+            res.end()
         });
         
         })
