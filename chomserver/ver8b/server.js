@@ -165,7 +165,7 @@ app.post("/api/reading/", (req, res, next) => {
         
         var sql_insert ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
 
-        var params_insert =[ts,data.value, prev_data.value,prev_data.value]
+        var params_insert =[ts,prev_data.sensorA, prev_data.sensorA,prev_data.sensorA]
 
         db.run(sql_insert, params_insert, function (err, result) {
             if (err){
