@@ -152,7 +152,8 @@ app.post("/api/reading/", (req, res, next) => {
 
     var sql = "select * from user order by id desc LIMIT 1"
     var params = []
-    var db_prev;
+    var prev_data;
+
     db.all(sql, params, (err, row) => {
         if (err) {
             console.log('error!')
@@ -160,32 +161,28 @@ app.post("/api/reading/", (req, res, next) => {
         }
         var prev_data = row[0];
         console.log(prev_data);
-    })
 
+        /*
+        var sql ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
 
+        var params =[ts,data.value, data.value,data.value]
 
-    var sql ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
+        db.run(sql, params, function (err, result) {
+            if (err){
+                res.status(400).json({"error": err.message})
+                return;
+            }
+            
+            res.send({
+                "message": "success"
+            })
+            res.end()
+        });
 
-    var params =[ts,data.value, data.value,data.value]
-
-    db.run(sql, params, function (err, result) {
-        if (err){
-            res.status(400).json({"error": err.message})
-            return;
-        }
-        //res.end('It worked!')
-        /*res.json({
-            "message": "success",
-            "data": data,
-            "id" : this.lastID
-        })*/
-        //res.send('it worked!')
-        res.send({
-            "message": "success"
         })
-        res.end()
-        //res.writeHead(200, {'Content-Type': 'application/json'});
-    });
+        */
+    
+   
     //res.end('It worked!');
 })
 
