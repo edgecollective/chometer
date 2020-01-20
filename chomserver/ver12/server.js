@@ -129,10 +129,6 @@ app.post("/api/reading/", (req, res, next) => {
         return;
     }
     */
-   res.send({
-    "message": "success"
-    })
-
    var ts = Math.round((new Date()).getTime() / 1000);
    var data = {
     sensor: req.body.sensor,
@@ -161,7 +157,7 @@ app.post("/api/reading/", (req, res, next) => {
 
     db.all(sql, params, (err, row) => {
         if (err) {
-            console.log('error!')
+            res.status(400).json({"error": err.message})
             return;
         }
         var prev_data = row[0];
@@ -197,11 +193,9 @@ app.post("/api/reading/", (req, res, next) => {
                 return;
             }
             console.log("responding ...")
-            /*
             res.send({
                 "message": "success"
             })
-            */
             //res.end()
         });
         
