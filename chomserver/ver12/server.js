@@ -192,11 +192,14 @@ app.post("/api/reading/", (req, res, next) => {
                 return;
             }
             console.log("responding ...")
+
+            /*
             res.status(200).send({
                 "message": "success"
             })
+            */
             
-            //res.sendStatus(200);
+            res.sendStatus(200);
             //res.end()
         });
         
