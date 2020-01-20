@@ -170,7 +170,8 @@ app.post("/api/reading/", (req, res, next) => {
         var params_insert =[ts,0., 0.,0.]
 
         // check which value to keep
-
+        console.log("data.sensor = ",data.sensor);
+        
         if (data.sensor.localeCompare('sensorA') == 0 ){
             params_insert =[ts,data.value, prev_data.sensorB,prev_data.sensorC];
             console.log("inserting sensorA");
