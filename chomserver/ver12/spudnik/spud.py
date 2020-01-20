@@ -10,10 +10,8 @@ import adafruit_hcsr04
 SENSOR_ID = 'sensorB'
 APPROACH_THRESHOLD = 50. # cm
 RETREAT_THRESHOLD = 100. # cm
-LAG_PERIOD = 2. # seconds
+LAG_PERIOD = .2  # seconds
 SENSOR_MINIMUM = 20.
-
-
 
 CUSTOMER = 0.  # False
 start_time = 0.
@@ -106,28 +104,22 @@ except Exception as e:
 
 while True:
 
-    gc.collect()
+    #gc.collect()
 
     try:
-  
+        
+        time.sleep(.01)
+        
         distance = sonar.distance
-        print(SENSOR_ID,(distance,),(CUSTOMER,))
-        #time.sleep(.5)
-        """ 
-        if (distance > SENSOR_MINIMUM) and (distance < APPROACH_THRESHOLD) and (CUSTOMER==False):
-            print ("CUSTOMER APPROACHED!")
-            blink(1)
-            CUSTOMER=1.0
-            post_data(CUSTOMER)
-            time.sleep(LAG_PERIOD)
 
-        if (distance > SENSOR_MINIMUM) and (distance > RETREAT_THRESHOLD) and (CUSTOMER==True):
-            print ("CUSTOMER LEFT!")
+        if(distance > SENSOR_MINIMUM):
+            print(SENSOR_ID,(distance,),(CUSTOMER,))
+            post_data(distance)
             blink(1)
-            CUSTOMER=0.0
-            post_data(CUSTOMER)
-            time.sleep(LAG_PERIOD)
-        """
+
+        #time.sleep(LAG_PERIOD)
+
+
     except Exception as e:
 
         print("error: "+str(e))
