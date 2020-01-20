@@ -162,12 +162,12 @@ app.post("/api/reading/", (req, res, next) => {
         var prev_data = row[0];
         console.log(prev_data);
 
-        /*
-        var sql ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
+        
+        var sql_insert ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
 
-        var params =[ts,data.value, data.value,data.value]
+        var params_insert =[ts,data.value, prev_data.value,prev_data.value]
 
-        db.run(sql, params, function (err, result) {
+        db.run(sql_insert, params_insert, function (err, result) {
             if (err){
                 res.status(400).json({"error": err.message})
                 return;
@@ -178,7 +178,7 @@ app.post("/api/reading/", (req, res, next) => {
             })
             res.end()
         });
-        */
+        
         })
     
    
