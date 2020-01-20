@@ -167,20 +167,25 @@ app.post("/api/reading/", (req, res, next) => {
         var sql_insert ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
 
 
+        var params_insert =[ts,0., 0.,0.]
+
         // check which value to keep
-        
+
         if (data.sensor.localeCompare('sensorA') == 0 ){
             params_insert =[ts,data.value, prev_data.sensorB,prev_data.sensorC];
+            console.log("inserting sensorA");
         }
         else if (data.sensor.localeCompare('sensorB') == 0) {
             params_insert =[ts,prev_data.sensorA, data.value,prev_data.sensorC];
+            console.log("inserting sensorB");
         }
         else if (data.sensor.localeCompare('sensorC') == 0) {
             params_insert =[ts,prev_data.sensorA, prev_data.sensorB,data.value];
+            console.log("inserting sensorB");
         }
 
 
-        //var params_insert =[ts,prev_data.sensorA, prev_data.sensorA,prev_data.sensorA]
+        
 
         db.run(sql_insert, params_insert, function (err, result) {
             if (err){
