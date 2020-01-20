@@ -146,28 +146,63 @@ app.post("/api/reading/", (req, res, next) => {
         console.log('private key matches!')
     }
 
-    var sql ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
 
-    var params =[ts,data.value, data.value,data.value]
 
-    db.run(sql, params, function (err, result) {
-        if (err){
-            res.status(400).json({"error": err.message})
+    // get the previous values
+
+    var sql = "select * from user order by id desc LIMIT 1"
+    var params = [];
+    var prev_data;
+    var params_insert = [];
+
+    db.all(sql, params, (err, row) => {
+        if (err) {
+            console.log('error!')
             return;
         }
-        //res.end('It worked!')
-        /*res.json({
-            "message": "success",
-            "data": data,
-            "id" : this.lastID
-        })*/
-        //res.send('it worked!')
-        res.send({
-            "message": "success"
+        var prev_data = row[0];
+        console.log("old_values:",prev_data);
+
+        
+        var sql_insert ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
+
+
+        var params_insert =[ts,0., 0.,0.]
+
+        // check which value to keep
+        console.log("data.sensor = ",data.sensor);
+        
+        if (data.sensor.localeCompare('sensorA') == 0 ){
+            params_insert =[ts,data.value, prev_data.sensorB,prev_data.sensorC];
+            console.log("inserting sensorA");
+        }
+        else if (data.sensor.localeCompare('sensorB') == 0) {
+            params_insert =[ts,prev_data.sensorA, data.value,prev_data.sensorC];
+            console.log("inserting sensorB");
+        }
+        else if (data.sensor.localeCompare('sensorC') == 0) {
+            params_insert =[ts,prev_data.sensorA, prev_data.sensorB,data.value];
+            console.log("inserting sensorB");
+        }
+
+        console.log("new values:",params_insert)
+        
+
+        db.run(sql_insert, params_insert, function (err, result) {
+            if (err){
+                res.status(400).json({"error": err.message})
+                return;
+            }
+            
+            res.send({
+                "message": "success"
+            })
+            res.end()
+        });
+        
         })
-        res.end()
-        //res.writeHead(200, {'Content-Type': 'application/json'});
-    });
+    
+   
     //res.end('It worked!');
 })
 
