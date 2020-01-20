@@ -178,9 +178,8 @@ app.post("/api/reading/", (req, res, next) => {
             })
             res.end()
         });
-
-        })
         */
+        })
     
    
     //res.end('It worked!');
