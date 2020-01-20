@@ -1,0 +1,3 @@
+using ver5 on server to test posting updates
+
+ver10 seems to work with circuitpython, but not with python script?
