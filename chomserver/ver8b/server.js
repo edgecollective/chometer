@@ -151,8 +151,9 @@ app.post("/api/reading/", (req, res, next) => {
     // get the previous values
 
     var sql = "select * from user order by id desc LIMIT 1"
-    var params = []
+    var params = [];
     var prev_data;
+    var params_insert = [];
 
     db.all(sql, params, (err, row) => {
         if (err) {
@@ -165,7 +166,21 @@ app.post("/api/reading/", (req, res, next) => {
         
         var sql_insert ='INSERT INTO user (dateTime,sensorA,sensorB,sensorC) VALUES (?,?,?,?)'
 
-        var params_insert =[ts,prev_data.sensorA, prev_data.sensorA,prev_data.sensorA]
+
+        // check which value to keep
+        
+        if (data.sensor.localeCompare('sensorA') == 0 ){
+            params_insert =[ts,data.value, prev_data.sensorB,prev_data.sensorC];
+        }
+        else if (data.sensor.localeCompare('sensorB') == 0) {
+            params_insert =[ts,prev_data.sensorA, data.value,prev_data.sensorC];
+        }
+        else if (data.sensor.localeCompare('sensorC') == 0) {
+            params_insert =[ts,prev_data.sensorA, prev_data.sensorB,data.value];
+        }
+
+
+        //var params_insert =[ts,prev_data.sensorA, prev_data.sensorA,prev_data.sensorA]
 
         db.run(sql_insert, params_insert, function (err, result) {
             if (err){
