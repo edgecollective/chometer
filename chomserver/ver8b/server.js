@@ -160,7 +160,7 @@ app.post("/api/reading/", (req, res, next) => {
         }
         var prev_data = row[0];
         console.log(prev_data);
-    }
+    })
 
 
 
