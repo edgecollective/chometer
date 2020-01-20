@@ -8,7 +8,7 @@ import time
 import adafruit_hcsr04
 
 
-SENSOR_ID = 'SensorA'
+SENSOR_ID = 'sensorB'
 
 
 sonar = adafruit_hcsr04.HCSR04(trigger_pin=board.D10, echo_pin=board.D7)
