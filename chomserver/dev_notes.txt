@@ -1,3 +1,34 @@
 using ver5 on server to test posting updates
 
 ver10 seems to work with circuitpython, but not with python script?
+
+going back to ver8 and testing ...
+- ver 8 works with python script ..
+- does it work with circuitpython?
+- trying with spud3.py, which seems appropriate
+- circuitpython needs actual IP address, instead of 'localhost', even when going locally (makes sense, I think)
+- success.
+- just reconfirming the python script also works ... 
+- works.
+
+now going to try to put it on the server ...
+
+using ver8a, and changing to port 8002 so don't conflict with what is already running.
+- works
+
+okay, ver8b:  try to pull in data from previous posts ...
+
+- and now try on ver8b
+- works on remote server via python script ...
+- works on circuitpython
+
+ver8b works!
+
+--- 
+
+1/21/20   09:41
+
+running ver12 server.js on bayou for cindy ...
+ver14 has the 'stream' and 'grabber' code on the micro side ...
+
+ 
