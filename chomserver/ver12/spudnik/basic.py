@@ -6,13 +6,11 @@ from digitalio import DigitalInOut
 import gc
 import time
 import adafruit_hcsr04
-import neopixel
 
-
-SENSOR_ID = 'sensorA'
+SENSOR_ID = 'sensorB'
 APPROACH_THRESHOLD = 50. # cm
 RETREAT_THRESHOLD = 100. # cm
-LAG_PERIOD = 1  # seconds
+LAG_PERIOD = .2  # seconds
 SENSOR_MINIMUM = 20.
 
 CUSTOMER = 0.  # False
@@ -42,16 +40,12 @@ print("PK=",PRIVATE_KEY)
 #JSON_POST_URL = "http://localhost:8001/api/user"
 #JSON_POST_URL = "http://localhost:8001/api/reading"
 #JSON_POST_URL = "http://192.168.1.254:8001/api/reading"
-#JSON_POST_URL = "http://64.227.0.108:8002/api/reading"
-
-JSON_POST_URL = "http://157.245.241.239:8002/api/reading"
-
+JSON_POST_URL = "http://64.227.0.108:8002/api/reading"
 # esp32
 
 import adafruit_esp32spi.adafruit_esp32spi_socket as socket
 from adafruit_esp32spi import adafruit_esp32spi
-#import adafruit_requests as requests
-from adafruit_esp32spi import adafruit_esp32spi_wifimanager
+import adafruit_requests as requests
 
 esp32_cs = DigitalInOut(board.D11)
 esp32_ready = DigitalInOut(board.D12)
@@ -63,53 +57,70 @@ esp = adafruit_esp32spi.ESP_SPIcontrol(esp_spi, esp32_cs, esp32_ready, esp32_res
 led = digitalio.DigitalInOut(board.D13)
 led.direction = digitalio.Direction.OUTPUT
 
-# status_light = dotstar.DotStar(board.APA102_SCK, board.APA102_MOSI, 1, brightness=0.2)
-# Uncomment below for an externally defined RGB LED
 
-import adafruit_rgbled
-from adafruit_esp32spi import PWMOut
-RED_LED = PWMOut.PWMOut(esp, 26)
-GREEN_LED = PWMOut.PWMOut(esp, 27)
-BLUE_LED = PWMOut.PWMOut(esp, 25)
-status_light = adafruit_rgbled.RGBLED(RED_LED, BLUE_LED, GREEN_LED)
-wifi = adafruit_esp32spi_wifimanager.ESPSPI_WiFiManager(esp, secrets, status_light)
+def connect(essid,password): # note that these are arguments are b'essid' and b'password'
+    print("Connecting to AP...")
+    while not esp.is_connected:
+        try:
+            esp.connect_AP(essid, password)
+        except RuntimeError as e:
+            print("could not connect to AP, retrying: ",e)
+            continue
+    print("Connected to", str(esp.ssid, 'utf-8'), "\tRSSI:", esp.rssi)
+
+    # Initialize a requests object with a socket and esp32spi interface
+    requests.set_socket(socket, esp)
+
+def post_data(CUSTOMER):
+    print("Posting value:", CUSTOMER)
+    json_data = {'private_key':PRIVATE_KEY, 
+        'sensor':SENSOR_ID, 
+        'value':CUSTOMER
+    } 
+    print("Posting to ",JSON_POST_URL)
+
+    response = requests.post(JSON_POST_URL, json=json_data)
+    print(response.content)
+    response.close()
+    print("posted!")
+
 
 def blink(num_times):
     for i in range(0,num_times):
         led.value=True
-        time.sleep(.1)
+        time.sleep(.02)
         led.value = False
-        time.sleep(.1)
+        time.sleep(.02)
+
+# measure and display loop
+led.value=True
+try:
+    connect(WIFI_ESSID,WIFI_PASS)
+    blink(3)
+except Exception as e:
+    print("error: "+str(e))
+    blink(100)
+
 
 while True:
 
+    #gc.collect()
+
     try:
-
-        time.sleep(.2)
+        
+        time.sleep(.01)
+        
         distance = sonar.distance
-        blink(1)
 
-        json_data = {'private_key':PRIVATE_KEY, 
-        'sensor':SENSOR_ID, 
-        'value':distance
-        }
+        if(distance > SENSOR_MINIMUM):
+            print(SENSOR_ID,(distance,),(CUSTOMER,))
+            post_data(distance)
+            blink(1)
 
-        print(json_data)
+        #time.sleep(LAG_PERIOD)
 
-        response = wifi.post(JSON_POST_URL,json=json_data)
-        print(response.json())
-        #print(response)
-        #response.close()
 
-        print('hello')
-        time.sleep(LAG_PERIOD)
+    except Exception as e:
 
-    except (ValueError, RuntimeError) as e:
-
-        print("Failed to get data, retrying\n", e)
-        wifi.reset()
-        time.sleep(1)
-        continue
-
-        #print("error: "+str(e))
+        print("error: "+str(e))
         #time.sleep(2)

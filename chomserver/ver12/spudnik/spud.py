@@ -10,7 +10,7 @@ import adafruit_hcsr04
 SENSOR_ID = 'sensorB'
 APPROACH_THRESHOLD = 50. # cm
 RETREAT_THRESHOLD = 100. # cm
-LAG_PERIOD = .2  # seconds
+LAG_PERIOD = .5  # seconds
 SENSOR_MINIMUM = 20.
 
 CUSTOMER = 0.  # False
@@ -40,7 +40,10 @@ print("PK=",PRIVATE_KEY)
 #JSON_POST_URL = "http://localhost:8001/api/user"
 #JSON_POST_URL = "http://localhost:8001/api/reading"
 #JSON_POST_URL = "http://192.168.1.254:8001/api/reading"
-JSON_POST_URL = "http://64.227.0.108:8002/api/reading"
+#JSON_POST_URL = "http://64.227.0.108:8002/api/reading"
+
+JSON_POST_URL = "http://157.245.241.239:8002/api/reading"
+
 # esp32
 
 import adafruit_esp32spi.adafruit_esp32spi_socket as socket
@@ -104,12 +107,12 @@ except Exception as e:
 
 while True:
 
-    #gc.collect()
+    gc.collect()
 
     try:
         
         time.sleep(.01)
-        
+
         distance = sonar.distance
 
         if(distance > SENSOR_MINIMUM):
@@ -117,7 +120,7 @@ while True:
             post_data(distance)
             blink(1)
 
-        #time.sleep(LAG_PERIOD)
+        time.sleep(LAG_PERIOD)
 
 
     except Exception as e:
