@@ -26,6 +26,6 @@ while True:
                 data = {'private_key':PRIVATE_KEY, 'sensor':sensorValue, 'value':distance}
                 r = requests.post(url = JSON_POST_URL, json = data)
                 print('posted') 
-    
+            s.flushInput() 
     except Exception as e:
         print("error: "+str(e))
